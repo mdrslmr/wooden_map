@@ -27,3 +27,46 @@ The difficulty is, that one has to look ahead in several layers to make sure a p
 
 The code contains a hard-coded solution.
 
+The output is static therefore and it looks like this:
+
+```
+The symbols are releated to the peace like this: 
+
+    E  
+A B C D
+
+
+A D C B A
+B A B C D
+C A E E E
+D D C B A
+A A B C D
+
+D A E A A
+D C B A B
+E B E E C
+A B C D D
+B D A E A
+
+C B A B D
+E E B D C
+E C C C B
+E E D B A
+C C B A B
+
+B C E C E
+D C B A E
+E D E E E
+D C B A E
+D B C E C
+
+A D A D A
+D E B D B
+C E C C C
+B E D B D
+A A D A D
+
+```
+
+
+
