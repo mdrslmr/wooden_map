@@ -25,4 +25,5 @@ Then the peaces have to be put according to the plots.
 
 The difficulty is, that one has to look ahead in several layers to make sure a peace is not placed in the wrong rotation.
 
+The code contains a hard-coded solution.
 
