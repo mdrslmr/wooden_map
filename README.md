@@ -10,8 +10,10 @@ Well it is still not easy, but it worked for my puzzle.
 
 The idea is to give the bits of the general peace symbolic names like this:
 
+```
     E
 A B C D
+```
 
 Then turn the solution, which consists of coordinates, in to layers and put the symbols into the layers.
 
