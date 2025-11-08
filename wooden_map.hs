@@ -39,7 +39,7 @@ cube :: [Shape] -> Map -> Map
 cube xs m = foldl (flip peace) m xs
 
 peace :: Shape -> Map -> Map
-peace [a, b, c, d, e] m = put A a (put B b (put C c (put D d (put E e m))))
+peace [a, b, c, d, e] = put A a . put B b . put C c . put D d . put E e
 
 put :: Symbol -> V3 Int -> Map -> Map
 put s v m = e:m
