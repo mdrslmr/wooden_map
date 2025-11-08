@@ -7,6 +7,7 @@ module Main where
 
 import Linear.V3 (V3(V3))
 import Data.String (String)
+import Data.List (sort)
 
 genericPiece :: [V3 Int]
 genericPiece = [ V3 0 0 0, V3 0 0 1, V3 0 0 2, V3 0 0 3, V3 0 1 2 ]
@@ -27,70 +28,12 @@ allSolutionsSmart = [[V3 1 1 1,V3 1 2 1,V3 1 3 1,V3 1 4 1,V3 1 3 2],[V3 1 1 5,V3
 -}
 
 data Symbol = O | A | B | C | D | E
-    deriving Show
+    deriving (Show, Eq, Ord)
 
-type Map = (
-                    ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol)),
-                    ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol)),
-                    ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol)),
-                    ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol)),
-                    ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol)))
+type Map = [(V3 Int, Symbol)]
 
 initMap :: Map
-initMap = (
-                ((O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O)),
-                ((O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O)),
-                ((O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O)),
-                ((O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O)),
-                ((O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O),
-                (O,O,O,O,O)))
-
-type D2Map =  ((Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol),
-                    (Symbol,Symbol,Symbol,Symbol,Symbol))
-
-type Row = (Symbol,Symbol,Symbol,Symbol,Symbol)
+initMap = []
 
 cube :: [Shape] -> Map -> Map
 cube xs m = foldl (flip peace) m xs
@@ -99,45 +42,19 @@ peace :: Shape -> Map -> Map
 peace [a, b, c, d, e] m = put A a (put B b (put C c (put D d (put E e m))))
 
 put :: Symbol -> V3 Int -> Map -> Map
-put s (V3 x y 1) (l, m, n, o, p) = (put2d s x y l, m, n, o, p)
-put s (V3 x y 2) (l, m, n, o, p) = (l, put2d s x y m, n, o, p)
-put s (V3 x y 3) (l, m, n, o, p) = (l, m, put2d s x y n, o, p)
-put s (V3 x y 4) (l, m, n, o, p) = (l, m, n, put2d s x y o, p)
-put s (V3 x y 5) (l, m, n, o, p) = (l, m, n, o, put2d s x y p)
-                                        
-put2d :: Symbol -> Int -> Int -> D2Map -> D2Map
-put2d s x 1 (j, k, l, m, n) = (putRow s x j, k, l, m, n)
-put2d s x 2 (j, k, l, m, n) = (j, putRow s x k, l, m, n)
-put2d s x 3 (j, k, l, m, n) = (j, k, putRow s x l, m, n)
-put2d s x 4 (j, k, l, m, n) = (j, k, l, putRow s x m, n)
-put2d s x 5 (j, k, l, m, n) = (j, k, l, m, putRow s x n)
-
-putRow :: Symbol -> Int -> Row -> Row
-putRow s 1 (_, b, c, d, e) = (s, b, c, d, e)
-putRow s 2 (a, _, c, d, e) = (a, s, c, d, e)
-putRow s 3 (a, b, _, d, e) = (a, b, s, d, e)
-putRow s 4 (a, b, c, _, e) = (a, b, c, s, e)
-putRow s 5 (a, b, c, d, _) = (a, b, c, d, s)
+put s v m = e:m
+    where e = (v, s)
 
 formatMap :: Map -> String
-formatMap (l, m, n, o, p) = formatLayer l ++ "\n" ++
-                            formatLayer m ++ "\n" ++
-                            formatLayer n ++ "\n" ++
-                            formatLayer o ++ "\n" ++
-                            formatLayer p ++ "\n"
-formatLayer :: D2Map -> String
-formatLayer (j, k, l, m, n) = formatRow j ++ "\n" ++
-                              formatRow k ++ "\n" ++
-                              formatRow l ++ "\n" ++
-                              formatRow m ++ "\n" ++
-                              formatRow n ++ "\n"
+formatMap m = formatLines 1 (sort m)
 
-formatRow :: Row -> String
-formatRow (a,b,c,d,e) = show a ++ " " ++
-                        show b ++ " " ++
-                        show c ++ " " ++
-                        show d ++ " " ++
-                        show e
+formatLines :: Int -> Map -> String
+formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++ 
+                                                    formatLines (i+1) xs
+formatLines i ((_,s):xs) | i `mod` 5 == 0 = show s ++ "\n" ++
+                                                    formatLines (i+1) xs
+formatLines i ((_,s):xs) = show s ++ " " ++ formatLines (i+1) xs
+formatLines i [] = "\n"
 
 
 main :: IO ()
