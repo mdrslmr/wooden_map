@@ -6,7 +6,6 @@
 module Main where
 
 import Linear.V3 (V3(V3))
-import Data.String (String)
 import Data.List (sort)
 
 genericPiece :: [V3 Int]
@@ -39,11 +38,7 @@ cube :: [Shape] -> Map -> Map
 cube xs m = foldl (flip peace) m xs
 
 peace :: Shape -> Map -> Map
-peace [a, b, c, d, e] = put A a . put B b . put C c . put D d . put E e
-
-put :: Symbol -> V3 Int -> Map -> Map
-put s v m = e:m
-    where e = (v, s)
+peace vs m = zip vs [A,B,C,D,E] ++ m
 
 formatMap :: Map -> String
 formatMap m = formatLines 1 (sort m)
@@ -54,7 +49,7 @@ formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++
 formatLines i ((_,s):xs) | i `mod` 5 == 0 = show s ++ "\n" ++
                                                     formatLines (i+1) xs
 formatLines i ((_,s):xs) = show s ++ " " ++ formatLines (i+1) xs
-formatLines i [] = "\n"
+formatLines _ [] = "\n"
 
 
 main :: IO ()
