@@ -146,7 +146,7 @@ main = do
   if length s == 25 
   then
         do 
-            putStrLn "The symbols are releated to the peace like this: \n"
+            putStrLn "The symbols are related to the peace like this: \n"
             putStrLn "    E  "
             putStrLn "A B C D"
             putStrLn "\n"
