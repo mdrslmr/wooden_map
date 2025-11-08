@@ -6,7 +6,7 @@
 module Main where
 
 import Linear.V3 (V3(V3))
-import Data.List (sort)
+import Data.List (sortOn)
 
 genericPiece :: [V3 Int]
 genericPiece = [ V3 0 0 0, V3 0 0 1, V3 0 0 2, V3 0 0 3, V3 0 1 2 ]
@@ -41,7 +41,10 @@ peace :: Shape -> Map -> Map
 peace vs m = zip vs [A,B,C,D,E] ++ m
 
 formatMap :: Map -> String
-formatMap m = formatLines 1 (sort m)
+formatMap m = formatLines 1 (sortOn myord m)
+
+myord :: (V3 Int, Symbol) -> Int
+myord (V3 x y z, _) = 10000*z + 100*y + x
 
 formatLines :: Int -> Map -> String
 formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++ 
