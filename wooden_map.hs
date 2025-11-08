@@ -1,7 +1,6 @@
 {- cabal:
-   build-depends:      base , linear , time 
-   build-tool-depends: markdown-unlit:markdown-unlit
-   ghc-options:        -pgmL markdown-unlit -Wall
+   build-depends:      base , linear
+   ghc-options:        -Wall
 -}
 module Main where
 
