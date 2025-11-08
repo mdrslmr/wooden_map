@@ -44,7 +44,7 @@ formatMap :: Map -> String
 formatMap m = formatLines 1 (sortOn myord m)
 
 myord :: (V3 Int, Symbol) -> Int
-myord (V3 x y z, _) = 10000*z + 100*y + x
+myord (V3 x y z, _) = 25*z + 5*y + x
 
 formatLines :: Int -> Map -> String
 formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++ 
