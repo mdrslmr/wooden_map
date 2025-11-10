@@ -5,7 +5,7 @@
 module Main where
 
 import Linear.V3 (V3(V3))
-import Data.List (sortOn)
+import Data.List (sortBy)
 
 genericPiece :: [V3 Int]
 genericPiece = [ V3 0 0 0, V3 0 0 1, V3 0 0 2, V3 0 0 3, V3 0 1 2 ]
@@ -37,10 +37,11 @@ piece :: Map -> Shape -> Map
 piece m vs = zip vs [A,B,C,D,E] ++ m
 
 formatMap :: Map -> String
-formatMap m = formatLines 1 (sortOn myord m)
-
-myord :: (V3 Int, Symbol) -> Int
-myord (V3 x y z, _) = 25*z + 5*y + x
+formatMap m = formatLines 1 (sortBy myord m)
+myord  :: (V3 Int, a) -> (V3 Int, a) -> Ordering
+myord (V3 a b c, _) (V3 d e f, _) = compare c f `mappend`
+                                    compare b e `mappend`
+                                    compare a d
 
 formatLines :: Int -> Map -> String
 formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++ 
