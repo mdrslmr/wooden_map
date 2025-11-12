@@ -44,11 +44,10 @@ myord (V3 a b c, _) (V3 d e f, _) = compare c f `mappend`
                                     compare a d
 
 formatLines :: Int -> Map -> String
-formatLines i ((_,s):xs) | i `mod` 25 == 0 = show s ++ "\n\n" ++ 
-                                                    formatLines (i+1) xs
-formatLines i ((_,s):xs) | i `mod` 5 == 0 = show s ++ "\n" ++
-                                                    formatLines (i+1) xs
-formatLines i ((_,s):xs) = show s ++ " " ++ formatLines (i+1) xs
+formatLines i ((_,s):xs) = show s ++ sep ++ formatLines (i+1) xs
+            where sep | i `mod` 25 == 0 = "\n\n"
+                      | i `mod`  5 == 0 = "\n"
+                      | otherwise = " "
 formatLines _ [] = "\n"
 
 
